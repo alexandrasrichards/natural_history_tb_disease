@@ -1,3 +1,5 @@
+library(reshape2)
+
 source("Analysis/cohort_model_functions.R")
 source("Analysis/analysis_functions.R")
 
@@ -19,10 +21,12 @@ IBM_sim_clin <- full_simulation(nsteps,npeople,0,traces[,1:6],"one", treatment)
 IBM_sim <- full_simulation(nsteps,npeople,0.5,traces[,1:6],"one",treatment)
 traj_sub <- report_trajectories(IBM_sim_sub, npeople, 5, threshold_months, threshold_changes)
 traj_clin <- report_trajectories(IBM_sim_clin, npeople, 5, threshold_months, threshold_changes)
+
+# one model run trajectories
 traj_sum_sub <- summarise_trajectories(traj_sub,5)
 traj_sum_clin <- summarise_trajectories(traj_clin,5)
 
-
+# 10,000 model run trajectories (slower)
 traj_sum_sub <- median_trajectories(nreps, nsteps, npeople, 1, traces[,1:6], "one", treatment, 5)
 traj_sum_clin <- median_trajectories(nreps, nsteps, npeople, 0, traces[,1:6], "one", treatment, 5)
 
@@ -81,6 +85,10 @@ dur_symp_reg_med <- round(summary_stats_IBM[2,"symp_before_recover_med"], 2)
 dur_symp_reg_lower <- round(summary_stats_IBM[3,"symp_before_recover_med"], 2)
 dur_symp_reg_upper <- round(summary_stats_IBM[1,"symp_before_recover_med"], 2)
 
+write.csv(summary_stats_IBM_sub,here::here("Results/Analysis/latest_IBM_sub.csv"))
+write.csv(summary_stats_IBM_clin,here::here("Results/Analysis/latest_IBM_clin.csv"))
+write.csv(summary_stats_IBM,here::here("Results/Analysis/latest_IBM.csv"))
+
 
 ## ---With treatment at 0.7 (additional analysis)--------------------------------- ##
 
@@ -98,3 +106,5 @@ dur_sympT_treat_upper <- round(summary_stats_IBM_t[1,"symp_before_treat_med"], 2
 dur_sympT_reg_med <- round(summary_stats_IBM_t[2,"symp_before_recover_med"], 2)
 dur_sympT_reg_lower <- round(summary_stats_IBM_t[3,"symp_before_recover_med"], 2)
 dur_sympT_reg_upper <- round(summary_stats_IBM_t[1,"symp_before_recover_med"], 2)
+
+write.csv(summary_stats_IBM_t,here::here("Results/Analysis/latest_IBM_t.csv"))
