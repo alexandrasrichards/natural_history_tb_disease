@@ -18,6 +18,7 @@ Other libraries required to run this analysis are:
 * bayesplot
 * ggpubr
 * reshape2
+* ggforce
 
 ## Folder structure and code
 A script for the calibration code is contained in the Calibration folder, with the files contained in the calibration sub-folders all sourced within the script. Numerical outputs from the calibration are stored in the Results folder, and the figure published in the paper is stored in the Figures folder. Other figures are created within the script but not saved.
