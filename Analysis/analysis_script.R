@@ -1,4 +1,5 @@
 library(reshape2)
+library(ggforce)
 
 source("Analysis/cohort_model_functions.R")
 source("Analysis/analysis_functions.R")
@@ -30,12 +31,15 @@ traj_sum_clin <- summarise_trajectories(traj_clin,5)
 traj_sum_sub <- median_trajectories(nreps, nsteps, npeople, 1, traces[,1:6], "one", treatment, 5)
 traj_sum_clin <- median_trajectories(nreps, nsteps, npeople, 0, traces[,1:6], "one", treatment, 5)
 
+write.csv(traj_sum_sub,"Results/Analysis/latest_trajectories_subclinical.csv")
+write.csv(traj_sum_clin,"Results/Analysis/latest_trajectories_clinical.csv")
+
 traj_plot_sub <- plot_trajectories(traj_sum_sub, 5, "") + ggtitle("Subclinical cohort")
 traj_plot_clin <- plot_trajectories(traj_sum_clin, 5, "") + ggtitle("Clinical cohort")
 traj_plot <- traj_plot_sub + traj_plot_clin + plot_layout(guides = "collect") + plot_annotation(tag_levels = 'A')
 sankey_plot <- sankey_nat(IBM_sim)
 
-png(filename = here::here("Figures/subclinical-trajectory-plot.png"),
+png(filename = "Figures/subclinical-trajectory-plot.png",
     width = 290,
     height = 180,
     units = "mm",
@@ -43,7 +47,7 @@ png(filename = here::here("Figures/subclinical-trajectory-plot.png"),
 traj_plot_sub
 dev.off()
 
-png(filename = here::here("Figures/clinical-trajectory-plot.png"),
+png(filename = "Figures/clinical-trajectory-plot.png",
     width = 290,
     height = 180,
     units = "mm",
@@ -51,7 +55,7 @@ png(filename = here::here("Figures/clinical-trajectory-plot.png"),
 traj_plot_clin
 dev.off()
 
-png(filename = here::here("Figures/trajectory-plots.png"),
+png(filename = "Figures/trajectory-plots.png",
     width = 290,
     height = 180,
     units = "mm",
@@ -59,12 +63,12 @@ png(filename = here::here("Figures/trajectory-plots.png"),
 traj_plot
 dev.off()
 
-png(filename = here::here("Figures/sankey-plot.png"),
+png(filename = "Figures/sankey-plot.png",
     width = 290,
     height = 180,
     units = "mm",
     res = 600)
-sankey
+sankey_plot
 dev.off()
 
 
@@ -85,9 +89,9 @@ dur_symp_reg_med <- round(summary_stats_IBM[2,"symp_before_recover_med"], 2)
 dur_symp_reg_lower <- round(summary_stats_IBM[3,"symp_before_recover_med"], 2)
 dur_symp_reg_upper <- round(summary_stats_IBM[1,"symp_before_recover_med"], 2)
 
-write.csv(summary_stats_IBM_sub,here::here("Results/Analysis/latest_IBM_sub.csv"))
-write.csv(summary_stats_IBM_clin,here::here("Results/Analysis/latest_IBM_clin.csv"))
-write.csv(summary_stats_IBM,here::here("Results/Analysis/latest_IBM.csv"))
+write.csv(summary_stats_IBM_sub,"Results/Analysis/latest_IBM_sub.csv")
+write.csv(summary_stats_IBM_clin,"Results/Analysis/latest_IBM_clin.csv")
+write.csv(summary_stats_IBM,"Results/Analysis/latest_IBM.csv")
 
 
 ## ---With treatment at 0.7 (additional analysis)--------------------------------- ##
@@ -107,4 +111,4 @@ dur_sympT_reg_med <- round(summary_stats_IBM_t[2,"symp_before_recover_med"], 2)
 dur_sympT_reg_lower <- round(summary_stats_IBM_t[3,"symp_before_recover_med"], 2)
 dur_sympT_reg_upper <- round(summary_stats_IBM_t[1,"symp_before_recover_med"], 2)
 
-write.csv(summary_stats_IBM_t,here::here("Results/Analysis/latest_IBM_t.csv"))
+write.csv(summary_stats_IBM_t,"Results/Analysis/latest_IBM_t.csv")
